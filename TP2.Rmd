@@ -1,0 +1,184 @@
+---
+title: "TP2-R"
+author: "ABOUFIRASS BADR"
+date: "2023-12-01"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## T.P. no 2 Statistiques descriptives avec le logiciel R
+## EX2:
+
+Q1-Ecrire l’instruction suivante: data(package = "base")
+```{r}
+data(package = "datasets")
+
+```
+Q2-Pour analyser le fichier iris, il faut le charger. Quelle est l’instruction qu’il faut taper pour charger ce fichier ?
+
+```{r}
+data("iris")
+
+```
+Q3-Taper une à une chacune des instructions ci-dessous et noter le résultat obtenu si possible
+
+```{r}
+iris
+```
+  
+```{r}
+dim(iris)
+```
+<br/>
+```{r}
+names(iris)
+```
+
+Q4-Quelle(s) différence(s) faites-vous avec la commande > str(iris) ? 
+Réponse:
+La commande str(iris) est utilisée pour afficher la structure de l'objet R spécifié, dans ce cas, l'objet "iris"
+
+<br/>
+
+Q5-Tapez les commandes suivantes :
+>iris$Petal.Length
+>iris$Species
+
+<br/>
+```{r}
+iris$Petal.Length
+```
+<br/>
+```{r}
+iris$Species
+```
+<br/>
+Qu’observez-vous ? <br/>
+La première commande affiche les valeurs de la colonne "Petal.Length", et la deuxième commande affiche les valeurs de la colonne "Species"
+
+<br/>
+
+
+Q4- Taper "levels(iris$Species)"
+
+```{r}
+levels(iris$Species)
+```
+</br>
+
+Q5-Taper "summary(iris$Species)"
+
+```{r}
+summary(iris$Species)
+```
+</br>
+
+Taper "table(iris$Species)"
+
+```{r}
+table(iris$Species)
+```
+Comparer avec le résultat obtenu à la question précédente:
+"Les deux commandes donnent les mémes résultats"
+</br>
+
+Q6-Taper "pie(table(iris$Species))"
+
+```{r}
+pie(table(iris$Species))
+```
+ </br>
+
+Taper "barplot(table(iris$Species))"
+```{r}
+pie(barplot(table(iris$Species)))
+```
+
+Q7-On a : </br>
+
+```{r}
+collection1 <- rep(c("setosa", "versicolor", "virginica"), c(15, 19, 12))
+collection2 <- rep(c("setosa", "versicolor", "virginica"), c(22, 27, 17))
+```
+
+```{r}
+par(mfrow=c(2, 2))
+```
+
+Camembert pour la collection1
+
+```{r}
+pie(table(collection1))
+```
+
+Camembert pour la collection2
+
+```{r}
+pie(table(collection2))
+```
+
+Diagramme en bâtons pour la collection1
+
+```{r}
+barplot(table(collection1))
+```
+Diagramme en bâtons pour la collection2
+
+
+```{r}
+barplot(table(collection2))
+```
+
+Les camemberts sont intuitifs, adaptés pour montrer des proportions, mais peuvent manquer de précision. Les diagrammes en bâtons offrent une précision accrue, une comparaison directe facilitée, mais peuvent sembler moins intuitifs.
+
+Q8-Taper "summary(iris$Petal.Length)"
+
+```{r}
+summary(iris$Petal.Length)
+```
+</br>
+ Taper les lignes de commande suivantes :
+"min(iris$Petal.Length) max(iris$Petal.Length) mean(iris$Petal.Length)"
+
+```{r}
+min(iris$Petal.Length) 
+max(iris$Petal.Length) 
+mean(iris$Petal.Length)
+```
+
+```{r}
+sum(iris$Petal.Length)
+length(iris$Petal.Length)
+sum(iris$Petal.Length)/length(iris$Petal.Length)
+```
+Obtenez-vous le méme résultat que précédemment ? Réponse: Oui
+</br>
+
+Taper  "sort(iris$Petal.Length)":
+
+```{r}
+sort(iris$Petal.Length)
+```
+la commande sort(iris$Petal.Length), R trie les valeurs de la colonne "Petal.Length" du jeu de données "iris" par ordre croissant.
+
+```{r}
+ordLpetal <- sort(iris$Petal.Length)
+ordLpetal
+sum(ordLpetal)/length(ordLpetal)
+ordLpetal[38]
+(ordLpetal[75]+ordLpetal[76])/2
+ordLpetal[113]
+```
+Q9-> Taper : "hist(iris$Petal.Length,col=grey(0.6),main="Histogramme")"
+
+```{r}
+hist(iris$Petal.Length,col=grey(0.6),main="Histogramme")
+```
+
+## EX3:
+
+
+
