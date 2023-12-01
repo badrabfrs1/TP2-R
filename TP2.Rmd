@@ -3,6 +3,7 @@ title: "TP2-R"
 author: "ABOUFIRASS BADR"
 date: "2023-12-01"
 output: pdf_document
+latex_engine: xelatex
 ---
 
 ```{r setup, include=FALSE}
@@ -178,7 +179,230 @@ Q9-> Taper : "hist(iris$Petal.Length,col=grey(0.6),main="Histogramme")"
 hist(iris$Petal.Length,col=grey(0.6),main="Histogramme")
 ```
 
-## EX3:
+## EX3: Données brutes ou groupement en classes
+
+Q1- Nous considérons le groupement en classes suivant :
+]104; 114]; ]114; 124]; ]124; 134]; ]134; 144]; ]144; 154]; ]154; 164];
+]164; 174]; ]174; 184]. </br>
+
+Déterminer les effectifs et les fréquences de chaque classe:
+Pour les femmes :
+```{r}
+femmes <- c(105, 110, 112, 112, 118, 119, 120, 120, 125, 126, 127, 128, 130, 132, 133, 134, 135, 138, 138, 138, 138, 142, 145, 148, 148, 150, 151, 154, 154, 158)
+hommes <- c(141, 144, 146, 148, 149, 150, 150, 151, 153, 153, 153, 154, 155, 156, 156, 160, 160, 160, 163, 164, 164, 165, 166, 168, 168, 170, 172, 172, 176, 179)
+
+classes <- c(104, 114, 124, 134, 144, 154, 164, 174, 184)
+
+femmes_table <- cut(femmes, breaks = classes, include.lowest = FALSE, right = TRUE)
+
+femmes_effectifs <- table(femmes_table)
+
+femmes_frequences <- femmes_effectifs / length(femmes)
+```
+Pour les hommes:
+```{r}
+hommes_table <- cut(hommes, breaks = classes, include.lowest = FALSE, right = TRUE)
+hommes_effectifs <- table(hommes_table)
+hommes_frequences <- hommes_effectifs / length(hommes)
+```
+
+```{r}
+cat("Femmes - Effectifs :", femmes_effectifs, "\n")
+cat("Femmes - Fréquences :", femmes_frequences, "\n\n")
+
+cat("Hommes - Effectifs :", hommes_effectifs, "\n")
+cat("Hommes - Fréquences :", hommes_frequences, "\n")
+```
+ </br>
+Q2-Représentation graphique:
+
+```{r}
+df <- data.frame(taille = c(femmes, hommes),
+                 genre = rep(c("Femmes", "Hommes"), each = length(femmes)))
+```
 
 
+</br>
+Q3-Calcul des moyennes des trois distributions initiales:
+```{r}
+moyenne_ensemble <- mean(c(femmes, hommes))
+moyenne_femmes <- mean(femmes)
+moyenne_hommes <- mean(hommes)
+```
+```{r}
+moyenne_ensemble
+moyenne_femmes
+moyenne_hommes
+```
 
+Q4-Calcul des moyennes après le regroupement en classes:
+```{r}
+# Calcul des milieux des classes
+milieux_classes <- (classes[-1] + classes[-length(classes)]) / 2
+
+# Femmes : Moyenne après regroupement
+moyenne_femmes_classe <- sum(femmes_effectifs * milieux_classes) / sum(femmes_effectifs)
+
+# Hommes : Moyenne après regroupement
+moyenne_hommes_classe <- sum(hommes_effectifs * milieux_classes) / sum(hommes_effectifs)
+
+# Ensemble : Moyenne après regroupement
+moyenne_ensemble_classe <- sum((femmes_effectifs + hommes_effectifs) * milieux_classes) / sum(femmes_effectifs + hommes_effectifs)
+
+cat("Moyenne Femmes (après regroupement)   :", moyenne_femmes_classe, "\n")
+cat("Moyenne Hommes (après regroupement)   :", moyenne_hommes_classe, "\n")
+cat("Moyenne Ensemble (après regroupement) :", moyenne_ensemble_classe, "\n")
+```
+</br>
+
+Q5-Calcul des médianes des trois distributions initiales:
+
+```{r}
+mediane_ensemble <- median(c(femmes, hommes))
+mediane_femmes <- median(femmes)
+mediane_hommes <- median(hommes)
+
+cat("Médiane Ensemble :", mediane_ensemble, "\n")
+cat("Médiane Femmes   :", mediane_femmes, "\n")
+cat("Médiane Hommes   :", mediane_hommes, "\n")
+```
+</br>
+
+Q6-Calcul de l'écart interquartile:
+
+```{r}
+# Ecart interquartile pour l'ensemble
+iqr_ensemble <- IQR(c(femmes, hommes))
+
+# Ecart interquartile pour les femmes
+iqr_femmes <- IQR(femmes)
+
+# Ecart interquartile pour les hommes
+iqr_hommes <- IQR(hommes)
+
+cat("Ecart interquartile (Ensemble) :", iqr_ensemble, "\n")
+cat("Ecart interquartile (Femmes)   :", iqr_femmes, "\n")
+cat("Ecart interquartile (Hommes)   :", iqr_hommes, "\n")
+```
+</br>
+
+Q7-Calcul des variances et des écarts-types des trois distributions initiales :
+
+```{r}
+variance_ensemble <- var(c(femmes, hommes))
+variance_femmes <- var(femmes)
+variance_hommes <- var(hommes)
+
+# Ecart-types
+ecart_type_ensemble <- sd(c(femmes, hommes))
+ecart_type_femmes <- sd(femmes)
+ecart_type_hommes <- sd(hommes)
+
+cat("Variance (Ensemble) :", variance_ensemble, "\n")
+cat("Ecart-type (Ensemble) :", ecart_type_ensemble, "\n\n")
+
+cat("Variance (Femmes)   :", variance_femmes, "\n")
+cat("Ecart-type (Femmes) :", ecart_type_femmes, "\n\n")
+
+cat("Variance (Hommes)   :", variance_hommes, "\n")
+cat("Ecart-type (Hommes) :", ecart_type_hommes, "\n")
+```
+</br>
+
+Q8-Calcul des variances et des écarts-types après le regroupement en classes :
+
+```{r}
+# Femmes : Variance après regroupement
+variance_femmes_classe <- sum(femmes_effectifs * (milieux_classes - moyenne_femmes_classe)^2) / sum(femmes_effectifs)
+
+# Hommes : Variance après regroupement
+variance_hommes_classe <- sum(hommes_effectifs * (milieux_classes - moyenne_hommes_classe)^2) / sum(hommes_effectifs)
+
+# Ensemble : Variance après regroupement
+variance_ensemble_classe <- sum((femmes_effectifs + hommes_effectifs) * (milieux_classes - moyenne_ensemble_classe)^2) / sum(femmes_effectifs + hommes_effectifs)
+
+cat("Variance après regroupement (Femmes)   :", variance_femmes_classe, "\n")
+cat("Variance après regroupement (Hommes)   :", variance_hommes_classe, "\n")
+cat("Variance après regroupement (Ensemble) :", variance_ensemble_classe, "\n\n")
+
+# Femmes : Ecart-type après regroupement
+ecart_type_femmes_classe <- sqrt(variance_femmes_classe)
+
+# Hommes : Ecart-type après regroupement
+ecart_type_hommes_classe <- sqrt(variance_hommes_classe)
+
+# Ensemble : Ecart-type après regroupement
+ecart_type_ensemble_classe <- sqrt(variance_ensemble_classe)
+
+cat("Ecart-type après regroupement (Femmes)   :", ecart_type_femmes_classe, "\n")
+cat("Ecart-type après regroupement (Hommes)   :", ecart_type_hommes_classe, "\n")
+cat("Ecart-type après regroupement (Ensemble) :", ecart_type_ensemble_classe, "\n")
+```
+</br>
+
+Q9-Calcul des moments, des moments centrés et des paramètres de caractéristique de forme de Fisher pour la distribution des femmes :
+```{r}
+# Moments jusqu'à l'ordre 4
+moments_femmes <- moments::moment(femmes, order = 1:4)
+
+# Moments centrés jusqu'à l'ordre 4
+centred_moments_femmes <- moments::moment(femmes - mean(femmes), order = 1:4)
+
+# Paramètres de caractéristique de forme de Fisher
+skewness_femmes <- moments::skewness(femmes)
+kurtosis_femmes <- moments::kurtosis(femmes)
+
+cat("Moments (Femmes) :", moments_femmes, "\n")
+cat("Moments centrés (Femmes) :", centred_moments_femmes, "\n")
+cat("Skewness (Femmes) :", skewness_femmes, "\n")
+cat("Kurtosis (Femmes) :", kurtosis_femmes, "\n")
+```
+</br>
+
+## Statistique descriptive bivariée 
+</br>
+#Exercice 4 Suite de l’exercice 2
+
+Q11-Exécuter la ligne de commentaire suivante:
+
+```{r}
+plot(iris$Petal.Length, iris$Petal.Width, xlab="Longueur du pétale", ylab="Largeur du pétale", main="Nuage de points", pch=20)
+```
+le graphique permet une visualisation rapide et intuitive des relations entre la longueur et la largeur du pétale pour les iris dans le jeu de données.
+</br>
+
+```{r}
+sunflowerplot(iris$Petal.Length, iris$Petal.Width, xlab="Longueur du pétale", ylab="Largeur du pétale", main="Nuage de points", pch=20)
+```
+
+Q12-Réaliser l'étude du croisement de deux variables quantitatives de votre choix:
+</br>
+nous pouvons examiner la relation entre la longueur du sépale (Sepal.Length) et la largeur du sépale (Sepal.Width)
+
+```{r}
+plot(iris$Sepal.Length, iris$Sepal.Width, xlab="Longueur du sépale", ylab="Largeur du sépale", main="Croisement : Longueur vs Largeur du sépale", pch=20)
+```
+
+Q15:
+# Tracé des histogrammes des longueurs des pétales de l’ensemble des iris, des iris setosa, des iris versicolor et des iris virginica:
+```{r}
+par(mfrow=c(2,2))
+br0=seq(0,8,le=20)
+hist(iris$Petal.Length, main="Ensemble des 150 iris", xlab="Longueur du pétale", br=br0)
+hist(iris$Petal.Length[iris$Species=="setosa"], main="Setosa", xlab="Longueur du pétale", br=br0)
+hist(iris$Petal.Length[iris$Species=="versicolor"], main="Versicolor", xlab="Longueur du pétale", br=br0)
+hist(iris$Petal.Length[iris$Species=="virginica"], main="Virginica", xlab="Longueur du pétale", br=br0)
+```
+# Tracé des nuages des points de la largeur du pétale en fonction de la longueur du pétales de l’ensemble des iris,des iris setosa, des iris versicolor et des iris virginica:
+```{r}
+par(mfrow=c(2,2))
+plot(iris$Petal.Length, iris$Petal.Width, xlab="Longueur du pétale", ylab="Largeur du pétale", main="Nuage de points", pch=20)
+plot(iris$Petal.Length[iris$Species=="setosa"], iris$Petal.Width[iris$Species=="setosa"], xlim=c(1,6.9), ylim=c(0.1,2.5), xlab="",ylab="", main="iris setosa", pch=20)
+plot(iris$Petal.Length[iris$Species=="versicolor"], iris$Petal.Width[iris$Species=="versicolor"], xlim=c(1,6.9), ylim=c(0.1,2.5), xlab="", ylab="", main="iris versicolor", pch=20)
+plot(iris$Petal.Length[iris$Species=="virginica"], iris$Petal.Width[iris$Species=="virginica"], xlim=c(1,6.9), ylim=c(0.1,2.5), xlab="", ylab="", main="iris virginica", pch=20)
+```
+Q16:
+# Représentation graphique de toutes les possibilités de variables par variables:
+```{r}
+pairs(iris[1:4], main = "Anderson’s Iris Data -- 3 species", pch = 21, bg = c("red", "green3", "blue")[unclass(iris$Species)])
+```
